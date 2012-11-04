@@ -29,7 +29,7 @@ namespace {
 	};
 
 	// Convert primitive type name to wrapper class name.
-	const char* const wrapper_name(const std::string& s)
+	const char* wrapper_name(const std::string& s)
 	{
 		if(s == "boolean") return "Boolean";
 		if(s == "byte"   ) return "Byte";
