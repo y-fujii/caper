@@ -6,6 +6,8 @@ OBJS		= $(TARGET).o caper_cpg.o caper_tgt.o caper_generate_cpp.o caper_generate_
 #OBJS		= grammar_test.o
 DEPENDDIR	= ./depend
 
+VPATH = ./depend
+
 .c.d:
 	@$(CXX) -MM $< > $(DEPENDDIR)/$*.d.t
 	@cp $(DEPENDDIR)/$*.d.t $(DEPENDDIR)/$*.d
