@@ -62,17 +62,17 @@ public:
 
     // ‹L†—Ş
     if (c == eof()) {
-      v = Value( range( b, addr_ ), Operator( '$' ) );
+      v = Value( range( b, addr_ ), std::make_shared<Operator>( '$' ) );
       return token_eof;
     } else {
       switch( c ) {
-        case ':': v = Value( range( b, addr_ ), Operator( ':' ) ); return token_colon;
-        case ';': v = Value( range( b, addr_ ), Operator( ';' ) ); return token_semicolon;
-        case '|': v = Value( range( b, addr_ ), Operator( '|' ) ); return token_pipe;
-        case '(': v = Value( range( b, addr_ ), Operator( '(' ) ); return token_lparen;
-        case ')': v = Value( range( b, addr_ ), Operator( ')' ) ); return token_rparen;
-        case '[': v = Value( range( b, addr_ ), Operator( '[' ) ); return token_lbracket;
-        case ']': v = Value( range( b, addr_ ), Operator( ']' ) ); return token_rbracket;
+        case ':': v = Value( range( b, addr_ ), std::make_shared<Operator>( ':' ) ); return token_colon;
+        case ';': v = Value( range( b, addr_ ), std::make_shared<Operator>( ';' ) ); return token_semicolon;
+        case '|': v = Value( range( b, addr_ ), std::make_shared<Operator>( '|' ) ); return token_pipe;
+        case '(': v = Value( range( b, addr_ ), std::make_shared<Operator>( '(' ) ); return token_lparen;
+        case ')': v = Value( range( b, addr_ ), std::make_shared<Operator>( ')' ) ); return token_rparen;
+        case '[': v = Value( range( b, addr_ ), std::make_shared<Operator>( '[' ) ); return token_lbracket;
+        case ']': v = Value( range( b, addr_ ), std::make_shared<Operator>( ']' ) ); return token_rbracket;
       }
     }
 
@@ -84,7 +84,7 @@ public:
         c = sgetc();
       }
       sungetc( c );
-      v = Value( range( b, addr_ ), Identifier( ss.str() ) );
+      v = Value( range( b, addr_ ), std::make_shared<Identifier>( ss.str() ) );
       return token_identifier;
     }
 
@@ -97,7 +97,7 @@ public:
         c = sgetc();
       }
       sungetc( c );
-      v = Value( range( b, addr_ ), Integer( n ) );
+      v = Value( range( b, addr_ ), std::make_shared<Integer>( n ) );
       return token_integer;
     }
 
@@ -113,7 +113,7 @@ public:
 
       dirdic_type::const_iterator  i = dirdic_.find( ss.str() );
       if( i != dirdic_.end() ) {
-        v = Value( range( b, addr_ ), Directive( ss.str() ) );
+        v = Value( range( b, addr_ ), std::make_shared<Directive>( ss.str() ) );
         return (*i).second;
       }
       throw bad_directive( addr_, ss.str() );
@@ -153,7 +153,7 @@ public:
           }
         }
       }
-      v = Value( range( b, addr_ ), TypeTag( ss.str() ) );
+      v = Value( range( b, addr_ ), std::make_shared<TypeTag>( ss.str() ) );
       return token_typetag;
     }
 

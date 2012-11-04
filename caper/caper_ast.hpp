@@ -146,12 +146,7 @@ struct Value {
 		std::shared_ptr<void>   data;
 
         Value() {}
-
-        template < class T >
-        Value( const Range& r, const T& d ) : range( r ), data( new T( d ) ) {}
-
-        template < class T >
-        Value( const Range& r, const std::shared_ptr<T>& d ) : range( r ), data( d ) {}
+        Value( const Range& r, const std::shared_ptr<void>& d ) : range( r ), data( d ) {}
 };
 
 typedef Value value_type;
