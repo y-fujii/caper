@@ -3,7 +3,7 @@
 
 #include "lr.hpp"
 #include <deque>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace zw {
 
@@ -112,7 +112,7 @@ struct mark {
     typedef symbol< Token, Traits >                         symbol_type; 
     typedef rule< Token, Traits >                           rule_type;
     typedef item< Token, Traits >                           item_type;
-    typedef boost::shared_ptr< state< Token, Traits > >     state_ptr;
+    typedef std::shared_ptr< state< Token, Traits > >     state_ptr;
 
     bool kernel;
     enum { action_nil, action_shift, action_reduce } action;
@@ -286,7 +286,7 @@ make_lr1_table(
     typedef item_set< Token, Traits >       item_set_type; 
     typedef mark< Token, Traits >           mark_type;
     typedef state< Token, Traits >          state_type;
-    typedef boost::shared_ptr< state_type > state_ptr;
+    typedef std::shared_ptr< state_type > state_ptr;
     typedef parsing_table< Token, Traits >  parsing_table_type;
 
     terminal_type eof( "$", Traits::eof() );

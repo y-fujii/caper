@@ -8,6 +8,7 @@
 #include <cctype>
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 using std::exit;
 
 #include "fastlalr.hpp"
@@ -26,7 +27,6 @@ using std::exit;
 #include <iostream>
 #include <iterator>
 #include <algorithm>
-#include <boost/filesystem/operations.hpp>
 
 struct commandline_options {
 	std::string		infile;
@@ -220,7 +220,7 @@ int main( int argc, char** argv )
 		}
 
 		ofs.close();
-		boost::filesystem::remove( cmdopt.outfile );
+		std::remove( cmdopt.outfile.c_str() );
 
 		return 1;
 	}

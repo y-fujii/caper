@@ -2,7 +2,7 @@
 #define CAPER_AST_HPP
 
 #include "fastlalr.hpp"
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <boost/variant.hpp>
 
 ////////////////////////////////////////////////////////////////
@@ -140,7 +140,7 @@ public:
         Range range;
 };
 
-typedef boost::shared_ptr< Node > node_ptr;
+typedef std::shared_ptr< Node > node_ptr;
 
 ////////////////////////////////////////////////////////////////
 // value_type
@@ -169,32 +169,32 @@ struct Term : public Node {
 
 struct Choise : public Node {
         std::string                                     name;
-        std::vector< boost::shared_ptr< Term > >        terms;
+        std::vector< std::shared_ptr< Term > >        terms;
 
-        Choise( const Range& r, const std::string& as, const std::vector< boost::shared_ptr< Term > >& at)
+        Choise( const Range& r, const std::string& as, const std::vector< std::shared_ptr< Term > >& at)
                 : Node( r ), name( as ), terms( at ) {}
 };
 
 struct Choises : public Node {
-        std::vector< boost::shared_ptr< Choise > >      choises;
+        std::vector< std::shared_ptr< Choise > >      choises;
 
-        Choises( const Range& r, const std::vector< boost::shared_ptr< Choise > >& av )
+        Choises( const Range& r, const std::vector< std::shared_ptr< Choise > >& av )
                 : Node( r ), choises( av ) {}
 };
 
 struct Rule : public Node {
         std::string                     name;
         TypeTag                         type;
-        boost::shared_ptr< Choises >    choises;
+        std::shared_ptr< Choises >    choises;
 
-        Rule( const Range& r, const std::string& as, const TypeTag& at, boost::shared_ptr< Choises > ar )
+        Rule( const Range& r, const std::string& as, const TypeTag& at, std::shared_ptr< Choises > ar )
                 : Node( r ), name( as ), type( at ), choises( ar ) {}
 };
 
 struct Rules : public Node {
-        std::vector< boost::shared_ptr< Rule > >        rules;
+        std::vector< std::shared_ptr< Rule > >        rules;
 
-        Rules( const Range& r, const std::vector< boost::shared_ptr< Rule > >& av ) : Node( r ), rules( av ) {}
+        Rules( const Range& r, const std::vector< std::shared_ptr< Rule > >& av ) : Node( r ), rules( av ) {}
 };
 
 struct TokenDeclElement : public Node {
@@ -211,10 +211,10 @@ struct Declaration : public Node {
 };
 
 struct TokenDecl : public Declaration {
-        std::vector< boost::shared_ptr< TokenDeclElement > >    elements;
+        std::vector< std::shared_ptr< TokenDeclElement > >    elements;
 
         TokenDecl( const Range& r ) : Declaration( r ) {}
-        TokenDecl( const Range& r, const std::vector< boost::shared_ptr< TokenDeclElement > >& av )
+        TokenDecl( const Range& r, const std::vector< std::shared_ptr< TokenDeclElement > >& av )
                 : Declaration( r ), elements( av ) {}
 };
 
@@ -245,19 +245,19 @@ struct DontUseSTLDecl : public Declaration {
 };
 
 struct Declarations : public Node {
-        std::vector< boost::shared_ptr< Declaration > > declarations;
+        std::vector< std::shared_ptr< Declaration > > declarations;
 
-        Declarations( const Range& r, const std::vector< boost::shared_ptr< Declaration > >& av )
+        Declarations( const Range& r, const std::vector< std::shared_ptr< Declaration > >& av )
                 : Node( r ), declarations( av ) {}
 };
 
 struct Document : public Node {
-        boost::shared_ptr< Declarations >       declarations;
-        boost::shared_ptr< Rules >              rules;
+        std::shared_ptr< Declarations >       declarations;
+        std::shared_ptr< Rules >              rules;
 
         Document( const Range& r,
-                  const boost::shared_ptr< Declarations >& ad,
-                  const boost::shared_ptr< Rules >& ar )
+                  const std::shared_ptr< Declarations >& ad,
+                  const std::shared_ptr< Rules >& ar )
                 : Node( r ), declarations( ad ), rules( ar ) {}
 };
 
@@ -294,9 +294,9 @@ typedef std::map< tgt::rule, semantic_action > action_map_type;
 ////////////////////////////////////////////////////////////////
 // utility functions
 template < class T >
-boost::shared_ptr< T > get_node( const value_type& v )
+std::shared_ptr< T > get_node( const value_type& v )
 {
-        return boost::static_pointer_cast<T>( boost::get< node_ptr >( v.data ) );
+        return std::static_pointer_cast<T>( boost::get< node_ptr >( v.data ) );
 }
 
 template < class T >

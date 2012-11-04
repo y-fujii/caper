@@ -16,7 +16,7 @@ value_type document_action::operator()( const cpg::parser::arguments& args ) con
 
 value_type sections_action::operator()( const cpg::parser::arguments& args ) const // declarations << rules;
 {
-        boost::shared_ptr< Document > p(
+        std::shared_ptr< Document > p(
                 new Document(
                         range( args ), 
                         get_node< Declarations >( args[0] ), 
@@ -27,15 +27,15 @@ value_type sections_action::operator()( const cpg::parser::arguments& args ) con
 // .宣言セクション
 value_type declarations0_action::operator()( const cpg::parser::arguments& args ) const // declaration;
 {
-        std::vector< boost::shared_ptr< Declaration > > v;
+        std::vector< std::shared_ptr< Declaration > > v;
         v.push_back( get_node< Declaration >( args[0] ) );
-        boost::shared_ptr< Declarations > q( new Declarations( range( args ), v ) );
+        std::shared_ptr< Declarations > q( new Declarations( range( args ), v ) );
         return Value( range( args ), q );
 }
 
 value_type declarations1_action::operator()( const cpg::parser::arguments& args ) const // declarations << declaration;
 {
-        boost::shared_ptr< Declarations > p = get_node< Declarations >( args[0] );
+        std::shared_ptr< Declarations > p = get_node< Declarations >( args[0] );
         p->declarations.push_back( get_node< Declaration >( args[1] ) );
         return Value( range( args ), p );
 }
@@ -74,27 +74,27 @@ value_type declaration5_action::operator()( const cpg::parser::arguments& args )
 // ..%token宣言
 value_type token_decl0_action::operator()( const cpg::parser::arguments& args ) const // directive_token;
 {
-        boost::shared_ptr< TokenDecl > p( new TokenDecl( range( args ) ) );
+        std::shared_ptr< TokenDecl > p( new TokenDecl( range( args ) ) );
         return Value( range( args ), p );
 }
 
 value_type token_decl1_action::operator()( const cpg::parser::arguments& args ) const // token_decl << token_decl_elem;
 {
-        boost::shared_ptr< TokenDecl > p = get_node< TokenDecl >( args[0] );
+        std::shared_ptr< TokenDecl > p = get_node< TokenDecl >( args[0] );
         p->elements.push_back( get_node< TokenDeclElement >( args[1] ) );
         return Value( range( args ), p );
 }
 
 value_type token_decl_element0_action::operator()( const cpg::parser::arguments& args ) const // identifier;
 {
-        boost::shared_ptr< TokenDeclElement > p(
+        std::shared_ptr< TokenDeclElement > p(
                 new TokenDeclElement( range( args ), boost::get< Identifier >( args[0].data ).s ) );
         return Value( range( args ), p );
 }
 
 value_type token_decl_element1_action::operator()( const cpg::parser::arguments& args ) const // identifier << typetag;
 {
-        boost::shared_ptr< TokenDeclElement > p(
+        std::shared_ptr< TokenDeclElement > p(
                 new TokenDeclElement(
                         range( args ),
                         boost::get< Identifier >( args[0].data ).s,
@@ -106,20 +106,20 @@ value_type token_decl_element1_action::operator()( const cpg::parser::arguments&
 /*
 value_type token_prefix_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_prefix << ident;
 {
-        boost::shared_ptr< TokenPrefixDecl > p(
+        std::shared_ptr< TokenPrefixDecl > p(
                 new TokenPrefixDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
         return Value( range( args ), p );
 }
 */
 value_type token_pfx_decl0_action::operator()( const cpg::parser::arguments& args ) const // dir_prefix << ident;
 {
-        boost::shared_ptr< TokenPrefixDecl > p( new TokenPrefixDecl( range( args ), "" ) );
+        std::shared_ptr< TokenPrefixDecl > p( new TokenPrefixDecl( range( args ), "" ) );
         return Value( range( args ), p );
 }
 
 value_type token_pfx_decl1_action::operator()( const cpg::parser::arguments& args ) const // dir_prefix << ident;
 {
-        boost::shared_ptr< TokenPrefixDecl > p(
+        std::shared_ptr< TokenPrefixDecl > p(
                 new TokenPrefixDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
         return Value( range( args ), p );
 }
@@ -127,14 +127,14 @@ value_type token_pfx_decl1_action::operator()( const cpg::parser::arguments& arg
 // ..%external_token宣言
 value_type external_token_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_ns << ident;
 {
-        boost::shared_ptr< ExternalTokenDecl > p( new ExternalTokenDecl( range( args ) ) );
+        std::shared_ptr< ExternalTokenDecl > p( new ExternalTokenDecl( range( args ) ) );
         return Value( range( args ), p );
 }
 
 // ..%access_modifier宣言
 value_type access_modifier_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_am << identifier;
 {
-        boost::shared_ptr< AccessModifierDecl > p(
+        std::shared_ptr< AccessModifierDecl > p(
                 new AccessModifierDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
         return Value( range( args ), p );
 }
@@ -142,7 +142,7 @@ value_type access_modifier_decl_action::operator()( const cpg::parser::arguments
 // ..%namespace宣言
 value_type namespace_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_ns << identifier;
 {
-        boost::shared_ptr< NamespaceDecl > p(
+        std::shared_ptr< NamespaceDecl > p(
                 new NamespaceDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
         return Value( range( args ), p );
 }
@@ -150,24 +150,24 @@ value_type namespace_decl_action::operator()( const cpg::parser::arguments& args
 // ..%dont_use_stl宣言
 value_type dont_use_stl_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_ns << identifier;
 {
-        boost::shared_ptr< DontUseSTLDecl > p( new DontUseSTLDecl( range( args ) ) );
+        std::shared_ptr< DontUseSTLDecl > p( new DontUseSTLDecl( range( args ) ) );
         return Value( range( args ), p );
 }
 
 // .文法セクション
 value_type entries0_action::operator()( const cpg::parser::arguments& args ) const // entry;
 {
-        std::vector< boost::shared_ptr< Rule > > v;
+        std::vector< std::shared_ptr< Rule > > v;
         v.push_back( get_node< Rule >( args[0] ) );
 
-        boost::shared_ptr< Rules > q( new Rules( range( args ), v ) );
+        std::shared_ptr< Rules > q( new Rules( range( args ), v ) );
 
         return Value( range( args ), q );
 }
 
 value_type entries1_action::operator()( const cpg::parser::arguments& args ) const // entries << entry;
 {
-        boost::shared_ptr< Rules > p( get_node< Rules >( args[0] ) );
+        std::shared_ptr< Rules > p( get_node< Rules >( args[0] ) );
         p->rules.push_back( get_node< Rule >( args[1] ) );
         return Value( range( args ), p );
 }
@@ -175,7 +175,7 @@ value_type entries1_action::operator()( const cpg::parser::arguments& args ) con
 // ..文法
 value_type  entry_action::operator()( const cpg::parser::arguments& args ) const // ident << typetag << deriv << semi;
 {
-        boost::shared_ptr< Rule > p(
+        std::shared_ptr< Rule > p(
                 new Rule(
                         range( args ), 
                         boost::get< Identifier >( args[0].data ).s,
@@ -188,16 +188,16 @@ value_type  entry_action::operator()( const cpg::parser::arguments& args ) const
 // ...右辺
 value_type derivations0_action::operator()( const cpg::parser::arguments& args ) const // colon << derivation;
 {
-        std::vector< boost::shared_ptr< Choise > > v;
+        std::vector< std::shared_ptr< Choise > > v;
         v.push_back( get_node< Choise >( args[1] ) );
 
-        boost::shared_ptr< Choises > r( new Choises( range( args ), v ) );
+        std::shared_ptr< Choises > r( new Choises( range( args ), v ) );
         return Value( range( args ), r );
 }
 
 value_type derivations1_action::operator()( const cpg::parser::arguments& args ) const // deriv << pipe << deriv; 
 {
-        boost::shared_ptr< Choises > q = get_node< Choises >( args[0] );
+        std::shared_ptr< Choises > q = get_node< Choises >( args[0] );
         q->choises.push_back( get_node< Choise >( args[2] ) );
         return Value( range( args ), q );
 }
@@ -205,27 +205,27 @@ value_type derivations1_action::operator()( const cpg::parser::arguments& args )
 // ...右辺の項目
 value_type derivation0_action::operator()( const cpg::parser::arguments& args ) const // lbracket  << rbracket;
 {
-        boost::shared_ptr< Choise > p(
+        std::shared_ptr< Choise > p(
                 new Choise(
                         range( args ), 
                         "",
-                        std::vector< boost::shared_ptr< Term > >() ) );
+                        std::vector< std::shared_ptr< Term > >() ) );
         return Value( range( args ), p );
 }
 
 value_type derivation1_action::operator()( const cpg::parser::arguments& args ) const // lbracket << ident << rbracket;
 {
-        boost::shared_ptr< Choise > p(
+        std::shared_ptr< Choise > p(
                 new Choise(
                         range( args ), 
                         boost::get< Identifier >( args[1].data ).s,
-                        std::vector< boost::shared_ptr< Term > >() ) );
+                        std::vector< std::shared_ptr< Term > >() ) );
         return Value( range( args ), p );
 }
 
 value_type derivation2_action::operator()( const cpg::parser::arguments& args ) const // derivation << term;
 {
-        boost::shared_ptr< Choise > q = get_node< Choise >( args[0] );
+        std::shared_ptr< Choise > q = get_node< Choise >( args[0] );
         q->terms.push_back( get_node< Term >( args[1] ) );
 
         return Value( range( args ), q );
@@ -233,14 +233,14 @@ value_type derivation2_action::operator()( const cpg::parser::arguments& args ) 
 
 value_type term0_action::operator()( const cpg::parser::arguments& args ) const // identifier;
 {
-        boost::shared_ptr< Term > p(
+        std::shared_ptr< Term > p(
                 new Term( range( args ), boost::get< Identifier >( args[0].data ).s, -1 ) );
         return Value( range( args ), p );
 }
 
 value_type term1_action::operator()( const cpg::parser::arguments& args ) const // ident << lparen << int << rparen;
 {
-        boost::shared_ptr< Term > p(
+        std::shared_ptr< Term > p(
                 new Term(
                         range( args ), 
                         boost::get< Identifier >( args[0].data ).s,
@@ -443,17 +443,17 @@ void collect_informations(
         symbol_set_type known;          // 確定識別子名
         symbol_set_type unknown;        // 未確定識別子名
 
-        boost::shared_ptr< Document > doc = get_node< Document >( ast );
+        std::shared_ptr< Document > doc = get_node< Document >( ast );
         
         // 宣言
-        boost::shared_ptr< Declarations > declarations = doc->declarations;
-        for( std::vector< boost::shared_ptr< Declaration > >::const_iterator i = declarations->declarations.begin() ;
+        std::shared_ptr< Declarations > declarations = doc->declarations;
+        for( std::vector< std::shared_ptr< Declaration > >::const_iterator i = declarations->declarations.begin() ;
              i != declarations->declarations.end() ;
              ++i ) {
-                boost::shared_ptr< TokenDecl > tokendecl = boost::dynamic_pointer_cast< TokenDecl >( *i );
+                std::shared_ptr< TokenDecl > tokendecl = std::dynamic_pointer_cast< TokenDecl >( *i );
                 if( tokendecl ) {
                         // %token宣言
-                        for( std::vector< boost::shared_ptr< TokenDeclElement > >::const_iterator j =
+                        for( std::vector< std::shared_ptr< TokenDeclElement > >::const_iterator j =
                                      tokendecl->elements.begin() ;
                              j != tokendecl->elements.end() ;
                              ++j ) {
@@ -465,32 +465,32 @@ void collect_informations(
                                 terminal_types[(*j)->name] = (*j)->type.s;
                         }
                 }
-                boost::shared_ptr< TokenPrefixDecl > tokenprefixdecl =
-                        boost::dynamic_pointer_cast< TokenPrefixDecl >( *i );
+                std::shared_ptr< TokenPrefixDecl > tokenprefixdecl =
+                        std::dynamic_pointer_cast< TokenPrefixDecl >( *i );
                 if( tokenprefixdecl ) {
                         // %token_prefix宣言
                         options.token_prefix = tokenprefixdecl->prefix;
                 }
-                boost::shared_ptr< ExternalTokenDecl > externaltokendecl =
-                        boost::dynamic_pointer_cast< ExternalTokenDecl >( *i );
+                std::shared_ptr< ExternalTokenDecl > externaltokendecl =
+                        std::dynamic_pointer_cast< ExternalTokenDecl >( *i );
                 if( externaltokendecl ) {
                         // %external_token宣言
                         options.external_token = true;
                 }
-                boost::shared_ptr< AccessModifierDecl > accessmodifierdecl =
-                        boost::dynamic_pointer_cast< AccessModifierDecl >( *i );
+                std::shared_ptr< AccessModifierDecl > accessmodifierdecl =
+                        std::dynamic_pointer_cast< AccessModifierDecl >( *i );
                 if( accessmodifierdecl ) {
                         // %access_modifier宣言
                         options.access_modifier = accessmodifierdecl->modifier + " ";
                 }
-                boost::shared_ptr< NamespaceDecl > namespacedecl =
-                        boost::dynamic_pointer_cast< NamespaceDecl >( *i );
+                std::shared_ptr< NamespaceDecl > namespacedecl =
+                        std::dynamic_pointer_cast< NamespaceDecl >( *i );
                 if( namespacedecl ) {
                         // %namespace宣言
                         options.namespace_name = namespacedecl->name;
                 }
-                boost::shared_ptr< DontUseSTLDecl > dontusestldecl =
-                        boost::dynamic_pointer_cast< DontUseSTLDecl >( *i );
+                std::shared_ptr< DontUseSTLDecl > dontusestldecl =
+                        std::dynamic_pointer_cast< DontUseSTLDecl >( *i );
                 if( dontusestldecl ) {
                         // %dont_use_stl宣言
                         options.dont_use_stl = true;
@@ -498,11 +498,11 @@ void collect_informations(
         }
 
         // 規則
-        boost::shared_ptr< Rules > rules = doc->rules;
-        for( std::vector< boost::shared_ptr< Rule > >::const_iterator i = rules->rules.begin() ;
+        std::shared_ptr< Rules > rules = doc->rules;
+        for( std::vector< std::shared_ptr< Rule > >::const_iterator i = rules->rules.begin() ;
              i != rules->rules.end() ;
              ++i ) {
-                boost::shared_ptr< Rule > rule = *i;
+                std::shared_ptr< Rule > rule = *i;
                 //std::cerr << "known: " << rule->name << std::endl;
                 if( known.find( rule->name ) != known.end() ) {
                         throw duplicated_symbol( rule->range.beg, rule->name );
@@ -510,10 +510,10 @@ void collect_informations(
                 known.insert( rule->name );
                 nonterminal_types[rule->name] = rule->type.s;
 
-                for( std::vector< boost::shared_ptr< Choise > >::const_iterator j = rule->choises->choises.begin() ;
+                for( std::vector< std::shared_ptr< Choise > >::const_iterator j = rule->choises->choises.begin() ;
                      j != rule->choises->choises.end() ;
                      ++j ) {
-                        boost::shared_ptr< Choise > choise = *j;
+                        std::shared_ptr< Choise > choise = *j;
 
                         //std::cerr << "method: " << choise->name << std::endl;
                         if( methods.find( choise->name ) != methods.end() ) {
@@ -523,7 +523,7 @@ void collect_informations(
                         }
                         methods.insert( choise->name );
 
-                        for( std::vector< boost::shared_ptr< Term > >::const_iterator k = choise->terms.begin() ;
+                        for( std::vector< std::shared_ptr< Term > >::const_iterator k = choise->terms.begin() ;
                              k != choise->terms.end() ;
                              ++k ) {
                                 //std::cerr << "unknown: " << (*k)->name << std::endl;

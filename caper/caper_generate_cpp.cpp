@@ -7,8 +7,7 @@
 #include "caper_generate_cpp.hpp"
 #include <algorithm>
 #include <cstdio>
-#include <boost/tuple/tuple.hpp>
-#include <boost/tuple/tuple_comparison.hpp>
+#include <tuple>
 
 namespace {
 
@@ -608,7 +607,7 @@ void generate_cpp(
         os << ind1 << ind1 << "switch( token ) {\n";
 
         // reduce action cache
-		typedef boost::tuple<
+		typedef std::tuple<
 			std::vector< std::string >,
 			size_t,
 			size_t,
@@ -675,7 +674,7 @@ void generate_cpp(
 						}
 
 						reduce_action_cache_key_type key =
-							boost::make_tuple(
+							std::make_tuple(
 								signature,
 								nonterminal_index,
 								base,
@@ -727,10 +726,10 @@ void generate_cpp(
             const reduce_action_cache_key_type& key = (*i).first;
             const std::vector< std::string >& cases = (*i).second;
 
-			const std::vector< std::string >& signature = key.get<0>();
-			size_t nonterminal_index = key.get<1>();
-			size_t base = key.get<2>();
-			const std::vector< int >& arg_indices = key.get<3>();
+			const std::vector< std::string >& signature = std::get<0>( key );
+			size_t nonterminal_index = std::get<1>( key );
+			size_t base = std::get<2>( key );
+			const std::vector< int >& arg_indices = std::get<3>( key );
 
             for( size_t j = 0 ; j < cases.size() ; j++ ) {
                 os << ind1 << ind1 << "case " << cases[j] << ":\n";
