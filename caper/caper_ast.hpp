@@ -3,7 +3,6 @@
 
 #include "fastlalr.hpp"
 #include <memory>
-#include <boost/variant.hpp>
 
 ////////////////////////////////////////////////////////////////
 // Token
@@ -140,20 +139,19 @@ public:
         Range range;
 };
 
-typedef std::shared_ptr< Node > node_ptr;
-
 ////////////////////////////////////////////////////////////////
 // value_type
 struct Value {
-        typedef boost::variant< Nil, Operator, Identifier, Directive, TypeTag, Integer, node_ptr > data_type;
-
-        Range           range;
-        data_type       data;
+        Range	                range;
+		std::shared_ptr<void>   data;
 
         Value() {}
 
         template < class T >
-        Value( const Range& r, const T& d ) : range( r ), data( d ) {}
+        Value( const Range& r, const T& d ) : range( r ), data( new T( d ) ) {}
+
+        template < class T >
+        Value( const Range& r, const std::shared_ptr<T>& d ) : range( r ), data( d ) {}
 };
 
 typedef Value value_type;
@@ -293,12 +291,6 @@ typedef std::map< tgt::rule, semantic_action > action_map_type;
 
 ////////////////////////////////////////////////////////////////
 // utility functions
-template < class T >
-std::shared_ptr< T > get_node( const value_type& v )
-{
-        return std::static_pointer_cast<T>( boost::get< node_ptr >( v.data ) );
-}
-
 template < class T >
 Range range( const T& x ) { return Range( x[0].range.beg, x[x.size()-1].range.end ); }
 

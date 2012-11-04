@@ -35,7 +35,7 @@ void make_target_parser(
         const symbol_map_type&          nonterminal_types,
         bool                            algorithm_lr1 )
 {
-        std::shared_ptr< Document > doc = get_node< Document >( ast );
+        std::shared_ptr< Document > doc = std::static_pointer_cast< Document >( ast.data );
 
         // 各種データ
         std::map< std::string, tgt::terminal >        terminals;      // 終端記号表   ( 名前→terminal )

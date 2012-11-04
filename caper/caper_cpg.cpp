@@ -19,8 +19,8 @@ value_type sections_action::operator()( const cpg::parser::arguments& args ) con
         std::shared_ptr< Document > p(
                 new Document(
                         range( args ), 
-                        get_node< Declarations >( args[0] ), 
-                        get_node< Rules >       ( args[1] ) ) );
+                        std::static_pointer_cast< Declarations >( args[0].data ), 
+                        std::static_pointer_cast< Rules >       ( args[1].data ) ) );
         return Value( range( args ), p );
 }
 
@@ -28,15 +28,15 @@ value_type sections_action::operator()( const cpg::parser::arguments& args ) con
 value_type declarations0_action::operator()( const cpg::parser::arguments& args ) const // declaration;
 {
         std::vector< std::shared_ptr< Declaration > > v;
-        v.push_back( get_node< Declaration >( args[0] ) );
+        v.push_back( std::static_pointer_cast< Declaration >( args[0].data ) );
         std::shared_ptr< Declarations > q( new Declarations( range( args ), v ) );
         return Value( range( args ), q );
 }
 
 value_type declarations1_action::operator()( const cpg::parser::arguments& args ) const // declarations << declaration;
 {
-        std::shared_ptr< Declarations > p = get_node< Declarations >( args[0] );
-        p->declarations.push_back( get_node< Declaration >( args[1] ) );
+        std::shared_ptr< Declarations > p = std::static_pointer_cast< Declarations >( args[0].data );
+        p->declarations.push_back( std::static_pointer_cast< Declaration >( args[1].data ) );
         return Value( range( args ), p );
 }
 
@@ -80,15 +80,15 @@ value_type token_decl0_action::operator()( const cpg::parser::arguments& args ) 
 
 value_type token_decl1_action::operator()( const cpg::parser::arguments& args ) const // token_decl << token_decl_elem;
 {
-        std::shared_ptr< TokenDecl > p = get_node< TokenDecl >( args[0] );
-        p->elements.push_back( get_node< TokenDeclElement >( args[1] ) );
+        std::shared_ptr< TokenDecl > p = std::static_pointer_cast< TokenDecl >( args[0].data );
+        p->elements.push_back( std::static_pointer_cast< TokenDeclElement >( args[1].data ) );
         return Value( range( args ), p );
 }
 
 value_type token_decl_element0_action::operator()( const cpg::parser::arguments& args ) const // identifier;
 {
         std::shared_ptr< TokenDeclElement > p(
-                new TokenDeclElement( range( args ), boost::get< Identifier >( args[0].data ).s ) );
+                new TokenDeclElement( range( args ), std::static_pointer_cast< Identifier >( args[0].data )->s ) );
         return Value( range( args ), p );
 }
 
@@ -97,8 +97,8 @@ value_type token_decl_element1_action::operator()( const cpg::parser::arguments&
         std::shared_ptr< TokenDeclElement > p(
                 new TokenDeclElement(
                         range( args ),
-                        boost::get< Identifier >( args[0].data ).s,
-                        boost::get< TypeTag >( args[1].data ).s ) );
+                        std::static_pointer_cast< Identifier >( args[0].data )->s,
+                        std::static_pointer_cast< TypeTag >( args[1].data )->s ) );
         return Value( range( args ), p );
 }
 
@@ -107,7 +107,7 @@ value_type token_decl_element1_action::operator()( const cpg::parser::arguments&
 value_type token_prefix_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_prefix << ident;
 {
         std::shared_ptr< TokenPrefixDecl > p(
-                new TokenPrefixDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
+                new TokenPrefixDecl( range( args ), std::static_pointer_cast< Identifier >( args[1].data ).s ) );
         return Value( range( args ), p );
 }
 */
@@ -120,7 +120,7 @@ value_type token_pfx_decl0_action::operator()( const cpg::parser::arguments& arg
 value_type token_pfx_decl1_action::operator()( const cpg::parser::arguments& args ) const // dir_prefix << ident;
 {
         std::shared_ptr< TokenPrefixDecl > p(
-                new TokenPrefixDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
+                new TokenPrefixDecl( range( args ), std::static_pointer_cast< Identifier >( args[1].data )->s ) );
         return Value( range( args ), p );
 }
 
@@ -135,7 +135,7 @@ value_type external_token_decl_action::operator()( const cpg::parser::arguments&
 value_type access_modifier_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_am << identifier;
 {
         std::shared_ptr< AccessModifierDecl > p(
-                new AccessModifierDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
+                new AccessModifierDecl( range( args ), std::static_pointer_cast< Identifier >( args[1].data )->s ) );
         return Value( range( args ), p );
 }
 
@@ -143,7 +143,7 @@ value_type access_modifier_decl_action::operator()( const cpg::parser::arguments
 value_type namespace_decl_action::operator()( const cpg::parser::arguments& args ) const // dir_ns << identifier;
 {
         std::shared_ptr< NamespaceDecl > p(
-                new NamespaceDecl( range( args ), boost::get< Identifier >( args[1].data ).s ) );
+                new NamespaceDecl( range( args ), std::static_pointer_cast< Identifier >( args[1].data )->s ) );
         return Value( range( args ), p );
 }
 
@@ -158,7 +158,7 @@ value_type dont_use_stl_decl_action::operator()( const cpg::parser::arguments& a
 value_type entries0_action::operator()( const cpg::parser::arguments& args ) const // entry;
 {
         std::vector< std::shared_ptr< Rule > > v;
-        v.push_back( get_node< Rule >( args[0] ) );
+        v.push_back( std::static_pointer_cast< Rule >( args[0].data ) );
 
         std::shared_ptr< Rules > q( new Rules( range( args ), v ) );
 
@@ -167,8 +167,8 @@ value_type entries0_action::operator()( const cpg::parser::arguments& args ) con
 
 value_type entries1_action::operator()( const cpg::parser::arguments& args ) const // entries << entry;
 {
-        std::shared_ptr< Rules > p( get_node< Rules >( args[0] ) );
-        p->rules.push_back( get_node< Rule >( args[1] ) );
+        std::shared_ptr< Rules > p( std::static_pointer_cast< Rules >( args[0].data ) );
+        p->rules.push_back( std::static_pointer_cast< Rule >( args[1].data ) );
         return Value( range( args ), p );
 }
 
@@ -178,9 +178,9 @@ value_type  entry_action::operator()( const cpg::parser::arguments& args ) const
         std::shared_ptr< Rule > p(
                 new Rule(
                         range( args ), 
-                        boost::get< Identifier >( args[0].data ).s,
-                        boost::get< TypeTag >( args[1].data ).s,
-                        get_node< Choises >( args[2] ) ) );
+                        std::static_pointer_cast< Identifier >( args[0].data )->s,
+                        std::static_pointer_cast< TypeTag >( args[1].data )->s,
+                        std::static_pointer_cast< Choises >( args[2].data ) ) );
         return Value( range( args ), p );
 }
 
@@ -189,7 +189,7 @@ value_type  entry_action::operator()( const cpg::parser::arguments& args ) const
 value_type derivations0_action::operator()( const cpg::parser::arguments& args ) const // colon << derivation;
 {
         std::vector< std::shared_ptr< Choise > > v;
-        v.push_back( get_node< Choise >( args[1] ) );
+        v.push_back( std::static_pointer_cast< Choise >( args[1].data ) );
 
         std::shared_ptr< Choises > r( new Choises( range( args ), v ) );
         return Value( range( args ), r );
@@ -197,8 +197,8 @@ value_type derivations0_action::operator()( const cpg::parser::arguments& args )
 
 value_type derivations1_action::operator()( const cpg::parser::arguments& args ) const // deriv << pipe << deriv; 
 {
-        std::shared_ptr< Choises > q = get_node< Choises >( args[0] );
-        q->choises.push_back( get_node< Choise >( args[2] ) );
+        std::shared_ptr< Choises > q = std::static_pointer_cast< Choises >( args[0].data );
+        q->choises.push_back( std::static_pointer_cast< Choise >( args[2].data ) );
         return Value( range( args ), q );
 }
 
@@ -218,15 +218,15 @@ value_type derivation1_action::operator()( const cpg::parser::arguments& args ) 
         std::shared_ptr< Choise > p(
                 new Choise(
                         range( args ), 
-                        boost::get< Identifier >( args[1].data ).s,
+                        std::static_pointer_cast< Identifier >( args[1].data )->s,
                         std::vector< std::shared_ptr< Term > >() ) );
         return Value( range( args ), p );
 }
 
 value_type derivation2_action::operator()( const cpg::parser::arguments& args ) const // derivation << term;
 {
-        std::shared_ptr< Choise > q = get_node< Choise >( args[0] );
-        q->terms.push_back( get_node< Term >( args[1] ) );
+        std::shared_ptr< Choise > q = std::static_pointer_cast< Choise >( args[0].data );
+        q->terms.push_back( std::static_pointer_cast< Term >( args[1].data ) );
 
         return Value( range( args ), q );
 }
@@ -234,7 +234,7 @@ value_type derivation2_action::operator()( const cpg::parser::arguments& args ) 
 value_type term0_action::operator()( const cpg::parser::arguments& args ) const // identifier;
 {
         std::shared_ptr< Term > p(
-                new Term( range( args ), boost::get< Identifier >( args[0].data ).s, -1 ) );
+                new Term( range( args ), std::static_pointer_cast< Identifier >( args[0].data )->s, -1 ) );
         return Value( range( args ), p );
 }
 
@@ -243,8 +243,8 @@ value_type term1_action::operator()( const cpg::parser::arguments& args ) const 
         std::shared_ptr< Term > p(
                 new Term(
                         range( args ), 
-                        boost::get< Identifier >( args[0].data ).s,
-                        boost::get< Integer >( args[2].data ).n ) );
+                        std::static_pointer_cast< Identifier >( args[0].data )->s,
+                        std::static_pointer_cast< Integer >( args[2].data )->n ) );
         return Value( range( args ), p );
 }
 
@@ -443,7 +443,7 @@ void collect_informations(
         symbol_set_type known;          // 確定識別子名
         symbol_set_type unknown;        // 未確定識別子名
 
-        std::shared_ptr< Document > doc = get_node< Document >( ast );
+        std::shared_ptr< Document > doc = std::static_pointer_cast< Document >( ast.data );
         
         // 宣言
         std::shared_ptr< Declarations > declarations = doc->declarations;
