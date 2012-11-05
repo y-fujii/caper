@@ -124,6 +124,7 @@ void generate_cpp(
            << ind1 << ind1 << "stack_.reserve( gap_ + tmp_.size() );\n"
            << "\n"
            << ind1 << ind1 << "// expect not to throw\n"
+           << ind1 << ind1
            << "stack_.erase( stack_.begin() + gap_, stack_.end() );\n"
            << ind1 << ind1
            << "stack_.insert( stack_.end(), tmp_.begin(), tmp_.end() );\n"
